@@ -48,9 +48,9 @@ $(document).ready(function () {
     // hiển thị bảng ra giao diện
     $("body").append(
       $("<div>", { class: "container  h1v df aic" }).append(
-        $("<div>", { class: "content df bóng" }).append(
+        $("<div>", { class: "content df bóng w1" }).append(
           $("<div>", {
-            class: "menu col-md-3 df fdc aic  bgsc bgrn bgpc",
+            class: "menu col-md-3 df fdc aic bgsc bgrn bgpc",
           })
             .css({ backgroundImage: 'url("./assets/nen1.jpg")' })
             .append(
@@ -69,7 +69,7 @@ $(document).ready(function () {
                       $("<option>").text("Khó")
                     )
                   ),
-                $("<div>", { class: "btn pa15 w70 tac bra15 fwb fs11" })
+                $("<div>", { class: " start btn pa15 w70 tac bra15 fwb fs11" })
                   .css("background-color", "rgba(225,225,225,0.5)")
                   .text("Bắt Đầu")
               )
@@ -83,13 +83,12 @@ $(document).ready(function () {
                   "linear-gradient(rgba(17, 17, 17, 0.5), rgba(130, 121, 121, 0.5))"
                 )
                 .append(
-                  
                   $("<div>", { class: "sudoku-table" }).append(
-                    $("<div>", { class: "time ptb25 tar cf df jcfe" }).append(
+                    $("<div>", { class: " ptb25 tar cf df jcfe" }).append(
                       $("<i>", {
                         class: "fa-solid fa-hourglass-half plr10 fs15",
                       }),
-                      $("<span>").text("00:00")
+                      $("<span>",{class:"time"})
                     ),
                     $("<div>", { class: "df jcsc" }).append(
                       // sudoku-table
@@ -107,12 +106,14 @@ $(document).ready(function () {
                             }).append(
                               $.map([1, 2, 3, 4, 5, 6, 7, 8, 9], function (el) {
                                 return $("<div>", {
-                                  class: "w33 df jcsc ptb15 btn",
+                                  class: "  w33 df jcsc ptb15 btn",
                                 }).append(
                                   $("<div>", {
                                     class:
-                                      "btn pa25 w33 h30 bra15 df jcsc aic bgcf fs15 fwb",
-                                  }).append(el)
+                                      "btnKeyboard btn pa25 w33 h30 bra15 df jcsc aic bgcf fs15 fwb",
+                                  })
+                                    .append(el)
+                                    .attr("data-value", el)
                                 );
                               }),
                               // chs lai
@@ -125,8 +126,8 @@ $(document).ready(function () {
                                   .text("Chơi Lại"),
                                 $("<i>", {
                                   class:
-                                    "fa-solid fa-xmark w33 pa25 h30 bra15 df jcsc aic bgcf fs15 fwb btn",
-                                })
+                                    "fa-solid fa-xmark w33 pa25 h30 bra15 df jcsc aic bgcf fs15 fwb btn remove",
+                                }).attr("data-value", null)
                               )
                             )
                           )
@@ -143,6 +144,63 @@ $(document).ready(function () {
 
   // -------------------------------------------------------------------------------------------------------------------------------------
   // Logic game
+
+  //check nhập số từ bàn phím ảo
+  $(".btnKeyboard").on("mousedown", function () {
+    var activeInput = $("input:focus");
+    if (activeInput.length > 0) {
+      // điều kiện check xem có đang focus vào ô nhập nào k ,
+      var key = $(this).data("value");
+      activeInput.val(activeInput.val() + key);
+      checkRows();
+      checkColumns();
+      checkSectors();
+    }
+  });
+  // check số vừa nhập vào bảng bằng bàn phím máy tính
+  $("input").on("input", function (event) {
+    checkRows();
+    checkColumns();
+    checkSectors();
+  });
+  //xóa input
+  $(".remove").on("mousedown", function () {
+    var inputToClear = $("input:focus");
+    var removeData = $(this).data("value");
+    inputToClear.val(inputToClear.val() + removeData);
+  });
+  // Bộ đếm thời gian
+  function startTimer() {
+    // Lấy thời gian hiện tại
+    startTime = new Date().getTime();
+
+    // Cập nhật thời gian mỗi giây
+    timerInterval = setInterval(function () {
+      var currentTime = new Date().getTime();
+      var elapsedTimeInSeconds = Math.floor((currentTime - startTime) / 1000);
+      var hours = Math.floor(elapsedTimeInSeconds / 3600);
+      var minutes = Math.floor((elapsedTimeInSeconds % 3600) / 60);
+      var seconds = elapsedTimeInSeconds % 60;
+
+      // Định dạng thời gian
+      var formattedTime = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds);
+
+      // Hiển thị thời gian trên trang web
+      $(".time").html(formattedTime);
+    }, 1000); // Cập nhật mỗi giây
+  }
+  // Tính thời gian khi "Bắt đầu chơi"
+  $(".start").on("click", function () {
+    $()
+    startTimer();
+  });
+
+  // Hàm để đảm bảo rằng số được hiển thị luôn có 2 chữ số
+  function pad(number) {
+    return (number < 10 ? "0" : "") + number;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------------------------
   // Lặp qua bảng và tìm các ô đã được điền trước, sau đó khóa chúng
   $("input").each(function () {
     var prePopVal = $(this).val();
@@ -167,12 +225,6 @@ $(document).ready(function () {
       $(this).val($(this).val().substring(0, maxCount));
     }
     $(this).blur();
-  });
-  // check số vừa nhập vào bảng
-  $("input").on("input", function (event) {
-    checkRows();
-    checkColumns();
-    checkSectors();
   });
 
   // Hàm kiểm tra hàng, kích hoạt hàm dupes(); cho tất cả các hàng
