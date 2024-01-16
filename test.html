@@ -3,50 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đồng hồ đếm thời gian</title>
+    <title>Audio Player</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 <body>
 
-<div class="time"></div>
-<button id="startBtn">Start</button>
-<button id="stopBtn">Stop</button>
+<audio id="audioPlayer" controls>
+    <source src="assets/Nhac-Thien-Tinh-Tam-VA.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+</audio>
+
+<button id="startButton">Start</button>
+<button id="stopButton" disabled>Stop</button>
 
 <script>
-  let timerInterval;
-  let startTime;
+    $(document).ready(function() {
+        // Lấy thẻ audio và nút bấm bằng jQuery
+        var audio = $('#audioPlayer');
+        var startButton = $('#startButton');
+        var stopButton = $('#stopButton');
 
-  // Bộ đếm thời gian
-  function startTimer() {
-    // Lấy thời gian hiện tại
-    startTime = new Date().getTime();
+        // Gắn sự kiện click cho nút "Start"
+        startButton.on('click', function() {
+            // Bật audio
+            audio[0].play(); // Sử dụng [0] để truy cập thẻ audio DOM từ đối tượng jQuery
+            
+            // Bật nút "Stop" và vô hiệu hóa nút "Start"
+            startButton.prop('disabled', true);
+            stopButton.prop('disabled', false);
+        });
 
-    // Cập nhật thời gian mỗi giây
-    timerInterval = setInterval(function () {
-      // Lấy thời gian hiện tại
-      let currentTime = new Date().getTime();
-
-      // Tính thời gian đã trôi qua (tính bằng giờ, phút và giây)
-      let elapsedTimeInSeconds = Math.floor((currentTime - startTime) / 1000);
-      let hours = Math.floor(elapsedTimeInSeconds / 3600);
-      let minutes = Math.floor((elapsedTimeInSeconds % 3600) / 60);
-      let seconds = elapsedTimeInSeconds % 60;
-
-      // Định dạng thời gian
-      let formattedTime = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds);
-
-      // Hiển thị thời gian trên trang web
-      document.querySelector(".time").innerText = formattedTime;
-    }, 1000); // Cập nhật mỗi giây
-  }
-
-  // Sự kiện khi nút "Start" được click
-  document.getElementById("startBtn").addEventListener("click", function () {
-    startTimer();
-  });
-  // Hàm để đảm bảo rằng số được hiển thị luôn có 2 chữ số
-  function pad(number) {
-    return (number < 10 ? "0" : "") + number;
-  }
+        // Gắn sự kiện click cho nút "Stop"
+        stopButton.on('click', function() {
+            // Tắt audio
+            audio[0].pause();
+            audio[0].currentTime = 0;
+            
+            // Bật nút "Start" và vô hiệu hóa nút "Stop"
+            startButton.prop('disabled', false);
+            stopButton.prop('disabled', true);
+        });
+    });
 </script>
 
 </body>

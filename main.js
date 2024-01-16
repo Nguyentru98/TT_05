@@ -13,7 +13,7 @@ $(document).ready(function () {
   ];
 
   function createSudokuTable() {
-    var table = $("<table>", { class: "w1" }).attr({
+    var table = $("<table>", { class: "wh1 table-sudoku" }).attr({
       cellpadding: "0",
       cellspacing: "1",
       border: "0",
@@ -43,102 +43,8 @@ $(document).ready(function () {
         row.append($("<td>").append(input));
       }
       table.append(row);
-    }
-
-    // hiển thị bảng ra giao diện
-    $("body").append(
-      $("<div>", { class: "container  h1v df aic" }).append(
-        $("<div>", { class: "content df bóng w1" }).append(
-          $("<div>", {
-            class: "menu col-md-3 df fdc aic bgsc bgrn bgpc",
-          })
-            .css({ backgroundImage: 'url("./assets/nen1.jpg")' })
-            .append(
-              $("<div>", { class: "cf fsi tac fs3 fwb pa25 " }).text("SUDOKU"),
-              $("<div>", { class: "wh1 df fdc aic jcsa h50 cf mt50" }).append(
-                $("<div>", { class: "btn pa15 w70 tac bra15 fwb fs11" })
-                  .css("background-color", "rgba(225,225,225,0.5)")
-                  .text("Luật Chơi"),
-                $("<form>", { class: " w70 tac pa15 bra15 fwb fs11 df" })
-                  .css("background-color", "rgba(225,225,225,0.5)")
-                  .append(
-                    $("<label>").text("Độ khó :"),
-                    $("<select>", { class: "bn tac bgct fwb" }).append(
-                      $("<option>").text("Dễ"),
-                      $("<option>").text("Trung bình"),
-                      $("<option>").text("Khó")
-                    )
-                  ),
-                $("<div>", { class: " start btn pa15 w70 tac bra15 fwb fs11" })
-                  .css("background-color", "rgba(225,225,225,0.5)")
-                  .text("Bắt Đầu")
-              )
-            ),
-          $("<div>", { class: "menu col-md-9 df h1 bgsc bgrn bgpc" })
-            .css("background-image", "url('assets/nen2.jpg')")
-            .append(
-              $("<div>", { class: "game-content df wh1 pa25 jcsc" })
-                .css(
-                  "background-image",
-                  "linear-gradient(rgba(17, 17, 17, 0.5), rgba(130, 121, 121, 0.5))"
-                )
-                .append(
-                  $("<div>", { class: "sudoku-table" }).append(
-                    $("<div>", { class: " ptb25 tar cf df jcfe" }).append(
-                      $("<i>", {
-                        class: "fa-solid fa-hourglass-half plr10 fs15",
-                      }),
-                      $("<span>",{class:"time"})
-                    ),
-                    $("<div>", { class: "df jcsc" }).append(
-                      // sudoku-table
-                      $("<div>", { class: "w50" }).append(table),
-                      // keyboard,
-                      $("<div>", { class: "w30 df pl25" }).append(
-                        $("<div>", { class: "bóng b1s h1 df fdc jcsc" })
-                          .css("background-color", "rgba(225,225,225,0.3)")
-                          .append(
-                            $("<div>", { class: " cf w1 tac ptb15 fs13" }).text(
-                              "Keyboard"
-                            ),
-                            $("<div>", {
-                              class: "w1 df fww",
-                            }).append(
-                              $.map([1, 2, 3, 4, 5, 6, 7, 8, 9], function (el) {
-                                return $("<div>", {
-                                  class: "  w33 df jcsc ptb15 btn",
-                                }).append(
-                                  $("<div>", {
-                                    class:
-                                      "btnKeyboard btn pa25 w33 h30 bra15 df jcsc aic bgcf fs15 fwb",
-                                  })
-                                    .append(el)
-                                    .attr("data-value", el)
-                                );
-                              }),
-                              // chs lai
-                              $("<div>", { class: "df w1 jcsa ptb25" }).append(
-                                $("<div>", {
-                                  class:
-                                    "btn pa25 h30 bra15 df jcsc aic bgcf fwb ",
-                                })
-                                  .css("background-color", "#ffff")
-                                  .text("Chơi Lại"),
-                                $("<i>", {
-                                  class:
-                                    "fa-solid fa-xmark w33 pa25 h30 bra15 df jcsc aic bgcf fs15 fwb btn remove",
-                                }).attr("data-value", null)
-                              )
-                            )
-                          )
-                      )
-                    )
-                  )
-                )
-            )
-        )
-      )
-    );
+      $(".taobang").append(table)
+    }  
   }
   createSudokuTable(); // call
 
@@ -151,7 +57,7 @@ $(document).ready(function () {
     if (activeInput.length > 0) {
       // điều kiện check xem có đang focus vào ô nhập nào k ,
       var key = $(this).data("value");
-      activeInput.val(activeInput.val() + key);
+      activeInput.val(key);
       checkRows();
       checkColumns();
       checkSectors();
@@ -163,6 +69,10 @@ $(document).ready(function () {
     checkColumns();
     checkSectors();
   });
+  // chơi lại
+  $(".play-again").on("click", function(){
+    alert("chưa làm")
+  })
   //xóa input
   $(".remove").on("mousedown", function () {
     var inputToClear = $("input:focus");
@@ -170,31 +80,102 @@ $(document).ready(function () {
     inputToClear.val(inputToClear.val() + removeData);
   });
   // Bộ đếm thời gian
+  var startTime;
+  var timerInterval;
+  var isPaused = false;
+  var pausedTime = 0;
+
   function startTimer() {
-    // Lấy thời gian hiện tại
-    startTime = new Date().getTime();
+    // Nếu đang tạm dừng, thì cập nhật lại thời gian bắt đầu
+    if (isPaused) {
+      startTime = new Date().getTime() - pausedTime;
+      isPaused = false;
+    } else {
+      // Nếu không đang tạm dừng, lấy thời gian hiện tại làm thời điểm bắt đầu
+      startTime = new Date().getTime();
+    }
 
     // Cập nhật thời gian mỗi giây
     timerInterval = setInterval(function () {
-      var currentTime = new Date().getTime();
-      var elapsedTimeInSeconds = Math.floor((currentTime - startTime) / 1000);
-      var hours = Math.floor(elapsedTimeInSeconds / 3600);
-      var minutes = Math.floor((elapsedTimeInSeconds % 3600) / 60);
-      var seconds = elapsedTimeInSeconds % 60;
+      if (!isPaused) {
+        var currentTime = new Date().getTime();
+        var elapsedTimeInSeconds = Math.floor((currentTime - startTime) / 1000);
+        var hours = Math.floor(elapsedTimeInSeconds / 3600);
+        var minutes = Math.floor((elapsedTimeInSeconds % 3600) / 60);
+        var seconds = elapsedTimeInSeconds % 60;
 
-      // Định dạng thời gian
-      var formattedTime = pad(hours) + ":" + pad(minutes) + ":" + pad(seconds);
+        // Định dạng thời gian
+        var formattedTime =
+          pad(hours) + ":" + pad(minutes) + ":" + pad(seconds);
 
-      // Hiển thị thời gian trên trang web
-      $(".time").html(formattedTime);
+        // Hiển thị thời gian trên trang web
+        $(".time").html(formattedTime);
+      }
     }, 1000); // Cập nhật mỗi giây
   }
+  // tạm dừng thời gian
+  function pauseTimer() {
+    if (!isPaused && timerInterval) {
+      clearInterval(timerInterval);
+      isPaused = true;
+      pausedTime = new Date().getTime() - startTime;
+    }
+  }
+  function pad(num) {
+    return num < 10 ? "0" + num : num;
+  }
+
   // Tính thời gian khi "Bắt đầu chơi"
   $(".start").on("click", function () {
-    $()
+    $(".game-content").show().addClass("dichuyen");
+    $(".rule").hide();
     startTimer();
   });
 
+  //audio
+  var audioPlayer = $(".audioPlayer");
+  var audioPlow = $(".fa-volume-low");
+  var audioXmark = $(".fa-volume-xmark");
+
+  audioPlow.on("click", function () {
+    audioPlayer[0].play();
+    audioPlow.hide();
+    audioXmark.show();
+  });
+  audioXmark.on("click", function () {
+    audioPlayer[0].pause();
+    audioPlow.show();
+    audioXmark.hide();
+  });
+
+  // pause
+  $(".fa-pause").click(function () {
+    pauseTimer();
+    $(this).hide();
+    $(".fa-play").show();
+    $(".table-sudoku").hide();
+    $(".continue").css("display", "block");
+  });
+  // resume
+  $(".fa-play").click(function () {
+    startTimer();
+    $(this).hide();
+    $(".continue").css("display", "none");
+    $(".fa-pause").show();
+    $(".table-sudoku").show();
+  });
+  $(".btn-continue").click(function () {
+    $(".table-sudoku").show();
+    $(".continue").hide();
+    $(".fa-pause").show();
+    $(".fa-play").hide();
+    startTimer();
+  });
+  // luật chơi
+  $(".btn-rule").on("click", function () {
+    $(".rule").show().addClass("dichuyen");
+    $(".game-content").hide();
+  });
   // Hàm để đảm bảo rằng số được hiển thị luôn có 2 chữ số
   function pad(number) {
     return (number < 10 ? "0" : "") + number;
@@ -231,6 +212,7 @@ $(document).ready(function () {
   var checkRows = function (sectionToCheck) {
     $(".keyrow").each(function () {
       var thisRow = $(this).attr("class").split(" ")[1];
+      console.log(thisRow);
       var sectionToCheck = "." + thisRow;
       dupes(sectionToCheck);
     });

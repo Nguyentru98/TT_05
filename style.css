@@ -4,23 +4,6 @@ body {
 	padding:0;
 	font-family:'Open Sans','Helvetica Neue',Arial,sans-serif;
 }
-main {
-	width:352px;
-	margin:20px auto;	
-}
-h1, p, h4 {
-	text-align:center;
-	margin:0;
-	padding:0;
-}
-h4 {
-	margin-bottom:10px;
-}
-p {
-	height:20px;
-	line-height:20px;
-	font-size:18px;
-}
 table {
 	background:#fff;
 	margin:10px auto 20px auto;
@@ -55,7 +38,6 @@ table td input.prepopulated{
 	color:#000 !important;
 	font-weight:bold;
 	opacity:1 !important;
-	-webkit-text-fill-color:#000;
 }
 table td input.playable {
 	color:#c30;
@@ -64,42 +46,23 @@ table td input.inerror,
 table td input.prepopulated.inerror {
 	background:red !important;
 	color:#fff;
-	-webkit-text-fill-color:#fff;
 }
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
 }
-/* input[type=number] {
-    -moz-appearance:textfield;
-} */
-p .error {
-	display:none;
-	color:red;
+
+.dichuyen{
+	animation: table 0.6s ease-in-out;
 }
-p .ok {
-	display:none;
-}
-p .notfilled, p .completed {
-	font-weight:bold;
-	display:none;
-}
-p .notfilled {
-	font-size:0.8em;
-	color:red;
-}
-p .completed {
-	color:#c30;
-}
-button {
-	margin:5px auto;
-	display:block;
-	font-size:1.1em;
-	background:#fff;
-	padding:5px;
-	border:1px solid #999;
-	border-radius:3px;
-	color:#666;
-	
+@keyframes table {
+	0%{
+		transform: translateX(-100%);
+		opacity: 0.5;
+	}
+	100%{
+		transform: translateX(0);
+		opacity: 1;
+	}
 }
