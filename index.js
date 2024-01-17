@@ -19,7 +19,7 @@ $("body").append(
                 .css("background-color", "rgb(0 0 0 / 50%)")
                 .text("Luật Chơi"),
               $("<form>", {
-                class: " w70 tac pa15 bra15 fwb fs11 df b1s",
+                class: " w70 btn tac pa15 bra15 fwb fs11 df b1s",
               })
                 .css("background-color", "rgb(0 0 0 / 50%)")
                 .append(
@@ -108,10 +108,10 @@ $("body").append(
                       })
                     ),
                     $("<i>", {
-                      class: "fa-solid fa-volume-low  plr10 fs15",
+                      class: "fa-solid fa-volume-low dn plr10 fs15",
                     }),
                     $("<i>", {
-                      class: "fa-solid fa-volume-xmark dn plr10 fs15",
+                      class: "fa-solid fa-volume-xmark  plr10 fs15",
                     }),
                     $("<i>", {
                       class: "fa-solid fa-play plr10 dn fs15",

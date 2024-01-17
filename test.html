@@ -1,50 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Player</title>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>Document</title>
 </head>
+
 <body>
+    <script>
+        var currentTimeMillis = new Date().getTime();
+        console.log(currentTimeMillis);
 
-<audio id="audioPlayer" controls>
-    <source src="assets/Nhac-Thien-Tinh-Tam-VA.mp3" type="audio/mp3">
-    Your browser does not support the audio element.
-</audio>
-
-<button id="startButton">Start</button>
-<button id="stopButton" disabled>Stop</button>
-
-<script>
-    $(document).ready(function() {
-        // Lấy thẻ audio và nút bấm bằng jQuery
-        var audio = $('#audioPlayer');
-        var startButton = $('#startButton');
-        var stopButton = $('#stopButton');
-
-        // Gắn sự kiện click cho nút "Start"
-        startButton.on('click', function() {
-            // Bật audio
-            audio[0].play(); // Sử dụng [0] để truy cập thẻ audio DOM từ đối tượng jQuery
-            
-            // Bật nút "Stop" và vô hiệu hóa nút "Start"
-            startButton.prop('disabled', true);
-            stopButton.prop('disabled', false);
-        });
-
-        // Gắn sự kiện click cho nút "Stop"
-        stopButton.on('click', function() {
-            // Tắt audio
-            audio[0].pause();
-            audio[0].currentTime = 0;
-            
-            // Bật nút "Start" và vô hiệu hóa nút "Stop"
-            startButton.prop('disabled', false);
-            stopButton.prop('disabled', true);
-        });
-    });
-</script>
-
+    </script>
 </body>
+
 </html>

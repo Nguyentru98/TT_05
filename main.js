@@ -12,41 +12,41 @@ $(document).ready(function () {
     [null, 9, null, 7, null, null, null, 6, null],
   ];
 
-  function createSudokuTable() {
-    var table = $("<table>", { class: "wh1 table-sudoku" }).attr({
-      cellpadding: "0",
-      cellspacing: "1",
-      border: "0",
-      align: "center",
-    });
-    // tạo hàng,cột,class của bảng
-    for (var i = 0; i < 9; i++) {
-      var row = $("<tr>");
-      for (var j = 0; j < 9; j++) {
-        var value = sudokuData[i][j];
-        var input = $("<input>").attr({
-          type: "number",
-          value: value !== null ? value : "",
-          maxlength: "1",
-          class:
-            "sector" +
-            (Math.floor(i / 3) * 3 + Math.floor(j / 3) + 1) +
-            " row" +
-            (i + 1) +
-            " column" +
-            (j + 1) +
-            (i % 3 === 0 && j % 3 === 0 ? " keysector" : "") +
-            (i === 0 ? " keycolumn" : "") +
-            (j === 0 ? " keyrow" : "") +
-            (Math.floor(i / 3) % 2 === Math.floor(j / 3) % 2 ? " alt" : ""),
-        });
-        row.append($("<td>").append(input));
+    function createSudokuTable() {
+      var table = $("<table>", { class: "wh1 table-sudoku" }).attr({
+        cellpadding: "0",
+        cellspacing: "1",
+        border: "0",
+        align: "center",
+      });
+      // tạo hàng,cột,class của bảng
+      for (var i = 0; i < 9; i++) {
+        var row = $("<tr>");
+        for (var j = 0; j < 9; j++) {
+          var value = sudokuData[i][j];
+          var input = $("<input>").attr({
+            type: "number",
+            value: value !== null ? value : "",
+            maxlength: "1",
+            class:
+              "sector" +
+              (Math.floor(i / 3) * 3 + Math.floor(j / 3) + 1)+
+              " row" +
+              (i + 1) +
+              " column" +
+              (j + 1) +
+              (i % 3 === 0 && j % 3 === 0 ? " keysector" : "") +
+              (i === 0 ? " keycolumn" : "") +
+              (j === 0 ? " keyrow" : "") +
+              (Math.floor(i / 3) % 2 === Math.floor(j / 3) % 2 ? " alt" : ""),
+          });
+          row.append($("<td>").append(input));
+        }
+        table.append(row);
+        $(".taobang").append(table);
       }
-      table.append(row);
-      $(".taobang").append(table);
     }
-  }
-  createSudokuTable();
+    createSudokuTable();
   // chơi lại
   $(".play-again").on("click", function () {
     $(".taobang").empty();
@@ -145,12 +145,12 @@ $(document).ready(function () {
   var audioXmark = $(".fa-volume-xmark");
 
   audioPlow.on("click", function () {
-    audioPlayer[0].play();
+    audioPlayer[0].pause();
     audioPlow.hide();
     audioXmark.show();
   });
   audioXmark.on("click", function () {
-    audioPlayer[0].pause();
+    audioPlayer[0].play();
     audioPlow.show();
     audioXmark.hide();
   });
@@ -185,6 +185,7 @@ $(document).ready(function () {
   });
 
   //--------------------------------------------------------------------------------------------------------------------------------------
+  
   // Lặp qua bảng và tìm các ô đã được điền trước, sau đó khóa chúng
   $("input").each(function () {
     var prePopVal = $(this).val();
@@ -215,8 +216,8 @@ $(document).ready(function () {
   var checkRows = function (sectionToCheck) {
     $(".keyrow").each(function () {
       var thisRow = $(this).attr("class").split(" ")[1];
-      console.log(thisRow);
       var sectionToCheck = "." + thisRow;
+      console.log(thisRow,"thisRow",sectionToCheck,"sectionToCheck")
       dupes(sectionToCheck);
     });
   };
