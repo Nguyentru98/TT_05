@@ -1,13 +1,13 @@
 $("body").append(
-  $("<div>", { class: "container  h1v df aic" }).append(
-    $("<div>", { class: "content df bóng w1" })
+  $("<div>", { class: "container" }).append(
+    $("<div>", { class: "content df fww bóng w1 mt50" })
       .css("height", "550px")
       .append(
         // cột menu
         $("<div>", {
-          class: "menu col-md-3  df fdc aic bgsc bgrn bgpc",
+          class: "menu col-md-3 col-xs-12 df fdc aic bgsc bgrn bgpc",
         })
-          .css({ backgroundImage: 'url("./assets/nen1.jpg")' })
+          .css({ backgroundImage: 'url("./assets/nen1.jpg")',minHeight:"550px" })
           .append(
             $("<div>", { class: "cf fsi tac fs3 fwb pa25 " }).text("SUDOKU"),
             $("<div>", {
@@ -44,13 +44,13 @@ $("body").append(
             )
           ),
         // cột nội dung
-        $("<div>", { class: "menu col-md-9 df h1 bgsc bgrn bgpc oh" })
-          .css("background-image", "url('assets/nen2.jpg')")
+        $("<div>", { class: "menu col-md-9 col-xs-12 df h1 bgsc bgrn bgpc oh" })
+          .css("background-image", "url('assets/bg-game.jpg')")
           .append(
             // luật chơi
-            $("<div>", { class: "rule wh1 dn pa pa25 bgcf" }).append(
-              $("<div>", { class: "" }).append(
-                $("<h1>", { class: "pa25 fs15" }).text(
+            $("<div>", { class: "rule wh1 dn pa pa25 bgcf df fww" }).append(
+              $("<div>", { class: "lh15" }).append(
+                $("<h1>", { class: "pa25 fs15 tac " }).text(
                   "Luật chơi cơ bản của Sudoku"
                 ),
                 $("<li>").text(
@@ -93,7 +93,7 @@ $("body").append(
             $("<div>", { class: "game-content dn pa df wh1 pa25 jcsc" })
               .css(
                 "background-image",
-                "linear-gradient(rgba(17, 17, 17, 0.5), rgba(130, 121, 121, 0.5))"
+                "linear-gradient(rgba(17, 17, 17, 0.7), rgba(130, 121, 121, 0.8))"
               )
               .append(
                 $("<div>", { class: "sudoku-main " }).append(
@@ -121,10 +121,9 @@ $("body").append(
                     }),
                     $("<span>", { class: "time" })
                   ),
-                  $("<div>", { class: "df jcsc" }).append(
-                    // sudoku table
-                    $("<div>", { class: " w50 pr" }).append(
-                      $("<div>", { class: "taobang" }),
+                  $("<div>", { class: "df jcsc" }).append(                   
+                    $("<div>", { class: "w1-xs w50 pr" }).append(
+                      $("<div>", { class: "taobang h1" }), // sudoku table
                       $("<div>", { class: "continue wh1 dn" }).append(
                         $("<div>", {
                           class: "pa df jcsc aic wh1 bgcod",
@@ -139,7 +138,7 @@ $("body").append(
                       )
                     ),
                     // keyboard,
-                    $("<div>", { class: "w30 df pl25" }).append(
+                    $("<div>", { class: "w30 w1-xs df pl25" }).append(
                       $("<div>", { class: "bóng b1s h1 df fdc jcsc" })
                         .css("background-color", "rgba(225,225,225,0.3)")
                         .append(
@@ -155,7 +154,7 @@ $("body").append(
                               }).append(
                                 $("<div>", {
                                   class:
-                                    "btnKeyboard btn pa25 w33 h30 bra15 df jcsc aic bgcf fs15 fwb",
+                                    "btnKeyboard btn pa25 pa15-xs w33 h30 bra15 df jcsc aic bgcf fs15 fwb",
                                 })
                                   .append(el)
                                   .attr("data-value", el)

@@ -43,13 +43,24 @@ $(document).ready(function () {
         row.append($("<td>").append(input));
       }
       table.append(row);
-      $(".taobang").append(table)
-    }  
+      $(".taobang").append(table);
+    }
   }
-  createSudokuTable(); // call
-
-  // -------------------------------------------------------------------------------------------------------------------------------------
-  // Logic game
+  createSudokuTable();
+  // chơi lại
+  $(".play-again").on("click", function () {
+    $(".taobang").empty();
+    createSudokuTable();
+    $("input").each(function () {
+      var prePopVal = $(this).val();
+      if (prePopVal > 0) {
+        $(this).addClass("prepopulated").attr("disabled", "disabled");
+      } else {
+        $(this).addClass("playable");
+      }
+    });
+    
+  });
 
   //check nhập số từ bàn phím ảo
   $(".btnKeyboard").on("mousedown", function () {
@@ -69,10 +80,6 @@ $(document).ready(function () {
     checkColumns();
     checkSectors();
   });
-  // chơi lại
-  $(".play-again").on("click", function(){
-    alert("chưa làm")
-  })
   //xóa input
   $(".remove").on("mousedown", function () {
     var inputToClear = $("input:focus");
@@ -153,7 +160,7 @@ $(document).ready(function () {
     pauseTimer();
     $(this).hide();
     $(".fa-play").show();
-    $(".table-sudoku").hide();
+    $(".taobang").hide();
     $(".continue").css("display", "block");
   });
   // resume
@@ -162,10 +169,10 @@ $(document).ready(function () {
     $(this).hide();
     $(".continue").css("display", "none");
     $(".fa-pause").show();
-    $(".table-sudoku").show();
+    $(".taobang").show();
   });
   $(".btn-continue").click(function () {
-    $(".table-sudoku").show();
+    $(".taobang").show();
     $(".continue").hide();
     $(".fa-pause").show();
     $(".fa-play").hide();
@@ -176,10 +183,6 @@ $(document).ready(function () {
     $(".rule").show().addClass("dichuyen");
     $(".game-content").hide();
   });
-  // Hàm để đảm bảo rằng số được hiển thị luôn có 2 chữ số
-  function pad(number) {
-    return (number < 10 ? "0" : "") + number;
-  }
 
   //--------------------------------------------------------------------------------------------------------------------------------------
   // Lặp qua bảng và tìm các ô đã được điền trước, sau đó khóa chúng
@@ -264,9 +267,6 @@ $(document).ready(function () {
     }
 
     if (hasDuplicate(sectionValues)) {
-      $(".error").addClass("banana").show();
-      $(".ok").hide();
-      $(".completed").hide();
       $(sectionToCheck).addClass("inerror");
       setTimeout(function () {
         $(sectionToCheck).removeClass("inerror");
