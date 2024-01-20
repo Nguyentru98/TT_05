@@ -7,7 +7,10 @@ $("body").append(
         $("<div>", {
           class: "menu col-md-3 col-xs-12 df fdc aic bgsc bgrn bgpc",
         })
-          .css({ backgroundImage: 'url("./assets/nen1.jpg")',minHeight:"550px" })
+          .css({
+            backgroundImage: 'url("./assets/nen1.jpg")',
+            minHeight: "550px",
+          })
           .append(
             $("<div>", { class: "cf fsi tac fs3 fwb pa25 " }).text("SUDOKU"),
             $("<div>", {
@@ -18,23 +21,27 @@ $("body").append(
               })
                 .css("background-color", "rgb(0 0 0 / 50%)")
                 .text("Luật Chơi"),
-              $("<form>", {
-                class: " w70 btn tac pa15 bra15 fwb fs11 df b1s",
+              $("<div>", {
+                class: "btnLevel w70 btn tac pa15 bra15 fwb fs11 df jcsc b1s",
               })
                 .css("background-color", "rgb(0 0 0 / 50%)")
                 .append(
                   $("<label>").text("Độ khó :"),
-                  $("<select>", { class: "bn tac bgct fwb cf" }).append(
-                    $("<option>")
-                      .text("Dễ")
-                      .css("background-color", "rgb(0 0 0 / 50%)"),
-                    $("<option>")
-                      .text("Trung bình")
-                      .css("background-color", "rgb(0 0 0 / 50%)"),
-                    $("<option>")
-                      .text("Khó")
-                      .css("background-color", "rgb(0 0 0 / 50%)")
-                  )
+                  // $("<select>", { class: "bn tac bgct fwb cf" }).append(
+                  //   $("<option>")
+                  //     .attr("value", "dê")
+                  //     .text("Dễ")
+                  //     .css("background-color", "rgb(0 0 0 / 50%)"),
+                  //   $("<option>")
+                  //     .attr("value", "trung-binh")
+                  //     .text("Trung bình")
+                  //     .css("background-color", "rgb(0 0 0 / 50%)"),
+                  //   $("<option>")
+                  //     .attr("value", "kho")
+                  //     .text("Khó")
+                  //     .css("background-color", "rgb(0 0 0 / 50%)")
+                  // )
+                  $("<div>",{class:"level cf plr15"}).text("Dễ")
                 ),
               $("<div>", {
                 class: " start btn pa15 w70 tac bra15 fwb fs11",
@@ -95,7 +102,7 @@ $("body").append(
                 "background-image",
                 "linear-gradient(rgba(17, 17, 17, 0.7), rgba(130, 121, 121, 0.8))"
               )
-              .append(
+              .append(             
                 $("<div>", { class: "sudoku-main " }).append(
                   // icon
                   $("<div>", { class: " ptb25 tar cf df jcfe" }).append(
@@ -121,7 +128,7 @@ $("body").append(
                     }),
                     $("<span>", { class: "time" })
                   ),
-                  $("<div>", { class: "df jcsc" }).append(                   
+                  $("<div>", { class: "df jcsc" }).append(
                     $("<div>", { class: "w1-xs w50 pr" }).append(
                       $("<div>", { class: "taobang h1" }), // sudoku table
                       $("<div>", { class: "continue wh1 dn" }).append(
@@ -150,14 +157,14 @@ $("body").append(
                           }).append(
                             $.map([1, 2, 3, 4, 5, 6, 7, 8, 9], function (el) {
                               return $("<div>", {
-                                class: "  w33 df jcsc ptb15 btn",
-                              }).append(
+                                class: "  w33 df jcsc ptb15 btn btnKeyboard",
+                              }).attr("data-value", el).append(
                                 $("<div>", {
                                   class:
-                                    "btnKeyboard btn pa25 pa15-xs w33 h30 bra15 df jcsc aic bgcf fs15 fwb",
+                                    "btn pa25 pa15-xs w33 h30 bra15 df jcsc aic bgcf fs15 fwb",
                                 })
                                   .append(el)
-                                  .attr("data-value", el)
+                                  
                               );
                             }),
                             // chơi lai

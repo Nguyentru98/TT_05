@@ -1,56 +1,130 @@
 // tạo bảng sudoku
 $(document).ready(function () {
-  var sudokuData = [
-    [null, 3, null, null, null, 6, null, 7, null],
-    [5, null, null, 3, null, 9, 1, null, 8],
-    [null, null, null, 4, 1, null, null, null, null],
-    [2, 4, null, 9, null, null, null, null, 7],
-    [6, null, 7, 2, 5, 3, 9, null, 4],
-    [9, null, null, null, null, 4, null, 3, 2],
-    [null, null, null, null, 4, 2, null, null, null],
-    [7, null, 5, 6, null, 8, null, null, 3],
-    [null, 9, null, 7, null, null, null, 6, null],
-  ];
+  // Hàm để tạo một bảng Sudoku mới hợp lệ
+  function generateRandomSudoku() {
+    return [
+      [5, 3, null, null, 7, null, null, null, null],
+      [6, null, null, 1, 9, 5, null, null, null],
+      [null, 9, 8, null, null, null, null, 6, null],
+      [8, null, null, null, 6, null, null, null, 3],
+      [4, null, null, 8, null, 3, null, null, 1],
+      [7, null, null, null, 2, null, null, null, 6],
+      [null, 6, null, null, null, null, 2, 8, null],
+      [null, null, null, 4, 1, 9, null, null, 5],
+      [null, null, null, null, 8, null, null, 7, 9],
+    ];
+  }
 
-    function createSudokuTable() {
-      var table = $("<table>", { class: "wh1 table-sudoku" }).attr({
-        cellpadding: "0",
-        cellspacing: "1",
-        border: "0",
-        align: "center",
-      });
-      // tạo hàng,cột,class của bảng
+  // Hàm để tạo bảng Sudoku với mức độ khó tùy chọn
+  function createSudokuTable(level) {
+    var sudokuData = generateRandomSudoku();
+    function isValid(value, row, col) {
       for (var i = 0; i < 9; i++) {
-        var row = $("<tr>");
-        for (var j = 0; j < 9; j++) {
-          var value = sudokuData[i][j];
-          var input = $("<input>").attr({
-            type: "number",
-            value: value !== null ? value : "",
-            maxlength: "1",
-            class:
-              "sector" +
-              (Math.floor(i / 3) * 3 + Math.floor(j / 3) + 1)+
-              " row" +
-              (i + 1) +
-              " column" +
-              (j + 1) +
-              (i % 3 === 0 && j % 3 === 0 ? " keysector" : "") +
-              (i === 0 ? " keycolumn" : "") +
-              (j === 0 ? " keyrow" : "") +
-              (Math.floor(i / 3) % 2 === Math.floor(j / 3) % 2 ? " alt" : ""),
-          });
-          row.append($("<td>").append(input));
+        if (sudokuData[row][i] === value || sudokuData[i][col] === value) {
+          return false;
         }
-        table.append(row);
-        $(".taobang").append(table);
+      }
+
+      var startRow = Math.floor(row / 3) * 3;
+      var startCol = Math.floor(col / 3) * 3;
+      for (var i = 0; i < 3; i++) {
+        for (var j = 0; j < 3; j++) {
+          if (sudokuData[startRow + i][startCol + j] === value) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+    // xáo trộn theo level
+
+    function shuffleArray(array) {
+      for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
       }
     }
-    createSudokuTable();
+
+    var valuesToShuffle = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    shuffleArray(valuesToShuffle);
+
+    for (var i = 0; i < 9; i++) {
+      for (var j = 0; j < 9; j++) {
+        sudokuData[i][j] = valuesToShuffle[sudokuData[i][j] - 1];
+      }
+    }
+
+    for (var i = 0; i < 9; i++) {
+      for (var j = 0; j < 9; j++) {
+        if (Math.random() > level) {
+          var temp = sudokuData[i][j];
+          sudokuData[i][j] = null;
+          // Kiểm tra tính hợp lệ sau khi ẩn một ô
+          if (!isValid(temp, i, j)) {
+            // Nếu không hợp lệ, phục hồi giá trị và ẩn ô khác
+            sudokuData[i][j] = temp;
+          }
+        }
+      }
+    }
+
+    var table = $("<table>", { class: "wh1 table-sudoku" }).attr({
+      cellpadding: "0",
+      cellspacing: "1",
+      border: "0",
+      align: "center",
+    });
+
+    for (var i = 0; i < 9; i++) {
+      var row = $("<tr>");
+      for (var j = 0; j < 9; j++) {
+        var value = sudokuData[i][j];
+        var input = $("<input>").attr({
+          type: "number",
+          value: value !== null ? value : "",
+          maxlength: "1",
+          class:
+            "sector" +
+            (Math.floor(i / 3) * 3 + Math.floor(j / 3) + 1) +
+            " row" +
+            (i + 1) +
+            " column" +
+            (j + 1) +
+            (i % 3 === 0 && j % 3 === 0 ? " keysector" : "") +
+            (i === 0 ? " keycolumn" : "") +
+            (j === 0 ? " keyrow" : "") +
+            (Math.floor(i / 3) % 2 === Math.floor(j / 3) % 2 ? " alt" : ""),
+        });
+
+        row.append($("<td>").append(input));
+      }
+      table.append(row);
+      $(".taobang").empty().append(table);
+    }
+    checkInputDisabled();
+  }
+  // độ khó
+  const level_name = ["Dễ", "Trung bình", "Khó"];
+  const level = [0.9, 0.7, 0.5];
+  var btnLevel = $(".btnLevel");
+  var levelText = $(".level");
+  var level_index = 0;
+  var level_nameIndex = 0;
+  btnLevel.on("click", function () {
+    level_nameIndex =
+      level_index + 1 > level_name.length - 1 ? 0 : level_index + 1;
+    level_index = level_nameIndex;
+    let newName_levelIndex = level_name[level_nameIndex];
+    let new_levelIndex = level_name[level_index];
+    levelText.text(newName_levelIndex);
+    createSudokuTable(new_levelIndex);
+  });
+
   // chơi lại
   $(".play-again").on("click", function () {
     $(".taobang").empty();
     createSudokuTable();
+    startTimer();
     $("input").each(function () {
       var prePopVal = $(this).val();
       if (prePopVal > 0) {
@@ -59,21 +133,23 @@ $(document).ready(function () {
         $(this).addClass("playable");
       }
     });
-    
   });
 
-  //check nhập số từ bàn phím ảo
-  $(".btnKeyboard").on("mousedown", function () {
-    var activeInput = $("input:focus");
-    if (activeInput.length > 0) {
-      // điều kiện check xem có đang focus vào ô nhập nào k ,
-      var key = $(this).data("value");
-      activeInput.val(key);
+  // nhập số từ bàn phím ảo
+  var keyboardButtons = $(".btnKeyboard");
+  keyboardButtons.on("mousedown", function (event) {
+    var key = $(this).data("value");
+    var focusedInput = $("input:focus");
+    if (focusedInput.length > 0) {
+      event.preventDefault();
+      focusedInput.val(key);
+      focusedInput.focus();
       checkRows();
       checkColumns();
       checkSectors();
     }
   });
+
   // check số vừa nhập vào bảng bằng bàn phím máy tính
   $("input").on("input", function (event) {
     checkRows();
@@ -84,7 +160,7 @@ $(document).ready(function () {
   $(".remove").on("mousedown", function () {
     var inputToClear = $("input:focus");
     var removeData = $(this).data("value");
-    inputToClear.val(inputToClear.val() + removeData);
+    inputToClear.val(removeData);
   });
   // Bộ đếm thời gian
   var startTime;
@@ -132,7 +208,7 @@ $(document).ready(function () {
     return num < 10 ? "0" + num : num;
   }
 
-  // Tính thời gian khi "Bắt đầu chơi"
+  // Bắt đầu chơi
   $(".start").on("click", function () {
     $(".game-content").show().addClass("dichuyen");
     $(".rule").hide();
@@ -185,17 +261,27 @@ $(document).ready(function () {
   });
 
   //--------------------------------------------------------------------------------------------------------------------------------------
-  
-  // Lặp qua bảng và tìm các ô đã được điền trước, sau đó khóa chúng
-  $("input").each(function () {
-    var prePopVal = $(this).val();
-    if (prePopVal > 0) {
-      $(this).addClass("prepopulated").attr("disabled", "disabled");
-    } else {
-      $(this).addClass("playable");
-    }
-  });
 
+  // Lặp qua bảng và tìm các ô đã được điền trước, sau đó khóa chúng
+  // $("input").each(function () {
+  //   var prePopVal = $(this).val();
+  //   if (prePopVal > 0) {
+  //     $(this).addClass("prepopulated").attr("disabled", "disabled");
+  //   } else {
+  //     $(this).addClass("playable");
+  //   }
+  // });
+  function checkInputDisabled() {
+    let input = $("input");
+    input.each(function () {
+      var prePopVal = $(this).val();
+      if (prePopVal > 0) {
+        $(this).addClass("prepopulated").attr("disabled", "disabled");
+      } else {
+        $(this).addClass("playable");
+      }
+    });
+  }
   // Ngăn nhập bất cứ thứ gì ngoài số từ 1-9
   $("input").keyup(function (e) {
     $(this).val(
@@ -217,7 +303,7 @@ $(document).ready(function () {
     $(".keyrow").each(function () {
       var thisRow = $(this).attr("class").split(" ")[1];
       var sectionToCheck = "." + thisRow;
-      console.log(thisRow,"thisRow",sectionToCheck,"sectionToCheck")
+      console.log(thisRow, "thisRow", sectionToCheck, "sectionToCheck");
       dupes(sectionToCheck);
     });
   };
