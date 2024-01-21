@@ -27,27 +27,18 @@ $("body").append(
                 .css("background-color", "rgb(0 0 0 / 50%)")
                 .append(
                   $("<label>").text("Độ khó :"),
-                  // $("<select>", { class: "bn tac bgct fwb cf" }).append(
-                  //   $("<option>")
-                  //     .attr("value", "dê")
-                  //     .text("Dễ")
-                  //     .css("background-color", "rgb(0 0 0 / 50%)"),
-                  //   $("<option>")
-                  //     .attr("value", "trung-binh")
-                  //     .text("Trung bình")
-                  //     .css("background-color", "rgb(0 0 0 / 50%)"),
-                  //   $("<option>")
-                  //     .attr("value", "kho")
-                  //     .text("Khó")
-                  //     .css("background-color", "rgb(0 0 0 / 50%)")
-                  // )
                   $("<div>",{class:"level cf plr15"}).text("Dễ")
                 ),
               $("<div>", {
                 class: " start btn pa15 w70 tac bra15 fwb fs11",
               })
                 .css("background-color", "rgb(0 0 0 / 50%)")
-                .text("Bắt Đầu")
+                .text("Bắt Đầu"),
+              $("<div>", {
+                class: " end-game dn btn pa15 w70 tac bra15 fwb fs11",
+              })
+                .css("background-color", "rgb(0 0 0 / 50%)")
+                .text("Xong")
             )
           ),
         // cột nội dung

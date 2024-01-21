@@ -103,6 +103,22 @@ $(document).ready(function () {
     }
     checkInputDisabled();
   }
+  // win game
+  $(".end-game").on("click",function(){
+    var sudokuSolved = true;
+    $("input").each(function () {
+      if (!$(this).val()) {
+        sudokuSolved = false;
+        return false;
+      }
+    });
+  
+    if (sudokuSolved) {
+      alert("Sudoku đã được giải!");
+    } else {
+      alert("Vui lòng điền đầy đủ các ô");
+    }
+  })
 
   // luật chơi
   $(".btn-rule").on("click", function () {
@@ -157,6 +173,7 @@ $(document).ready(function () {
       $(this).attr("disabled", "disabled");
       //biến theo dõi trạng thái đã click
       isButtonClicked = true;
+      $(".end-game").show();
     }
   });
 
