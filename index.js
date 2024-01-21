@@ -100,7 +100,7 @@ $("body").append(
                   $("<div>", { class: " ptb25 tar cf df jcsa" }).append(
                     $("<div>", { class: "df" }).append(
                       $("<label>").text("Người chơi :"),
-                      $("<div>", { class: "player cf plr15" }).text("Trụ")
+                      $("<div>", { class: "player cf plr15" })
                     ),
                     $("<div>", { class: "df" }).append(
                       $("<div>", { class: "score cf plr15" })

@@ -121,7 +121,7 @@ $(document).ready(function () {
   });
   // người chơi
   function nguoiChoi() {
-    let input = $("textarea").val().trim();
+    let input = $("textarea").val();
     if (input !== "") {
       $(".player").text(input);
       return true;
