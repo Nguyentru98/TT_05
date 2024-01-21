@@ -105,31 +105,26 @@ $(document).ready(function () {
   }
 
   // luật chơi
-  // $(".btn-rule").on("click", function () {
-  //   $(".rule").toggle().addClass("dichuyen");
-  //   $(".game-content").hide();
-  //   $(this).text("Đóng")
-  // });
   $(".btn-rule").on("click", function () {
     if ($(".rule").hide().hasClass("dichuyen")) {
-        $(".rule").removeClass("dichuyen");
-        $(".game-content").show();
-        $(this).text("Luật Chơi");
+      $(".rule").removeClass("dichuyen");
+      $(".game-content").show();
+      $(this).text("Luật Chơi");
     } else {
-        $(".rule").show().addClass("dichuyen");
-        $(".game-content").hide();
-        $(this).text("Đóng");
+      $(".rule").show().addClass("dichuyen");
+      $(".game-content").hide();
+      $(this).text("Đóng");
     }
-});
+  });
 
-// start game
+  // start game
   const level_name = ["Dễ", "Trung bình", "Khó"];
   const level = [1, 0.7, 0.5];
   var btnLevel = $(".btnLevel");
   var levelText = $(".level");
   var level_index = 0;
   var level_nameIndex = 0;
-  
+
   // Function để set độ khó và cập nhật giao diện
   function setDifficulty(index) {
     level_nameIndex = index;
@@ -139,25 +134,31 @@ $(document).ready(function () {
     levelText.text(newName_levelIndex);
     createSudokuTable(new_levelIndex);
   }
-  
+
   // Bắt sự kiện click trên nút độ khó
   btnLevel.on("click", function () {
     level_nameIndex =
       level_index + 1 > level_name.length - 1 ? 0 : level_index + 1;
     setDifficulty(level_nameIndex);
-  });
-  
-  // Bắt đầu chơi và chọn độ khó
-  $(".start").on("click", function () {
-    // Lấy độ khó hiện tại và bắt đầu trò chơi
-    let currentDifficulty = level[level_index];
-    $(".game-content").show().addClass("dichuyen");
-    $(".rule").hide();
-    $(this).text("Đang Chơi")
     startTimer();
-    createSudokuTable(currentDifficulty);
   });
-  
+
+  // Bắt đầu chơi và chọn độ khó
+  var isButtonClicked = false;
+  $(".start").on("click", function () {
+    if (!isButtonClicked) {
+      // Lấy độ khó hiện tại và bắt đầu trò chơi
+      let currentDifficulty = level[level_index];
+      $(".game-content").show().addClass("dichuyen");
+      $(".rule").hide();
+      $(this).text("Đang Chơi...");
+      startTimer();
+      createSudokuTable(currentDifficulty);
+      $(this).attr("disabled", "disabled");
+      //biến theo dõi trạng thái đã click
+      isButtonClicked = true;
+    }
+  });
 
   // chơi lại
   $(".play-again").on("click", function () {
