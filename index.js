@@ -16,6 +16,7 @@ $("body").append(
             $("<div>", {
               class: "wh1 df fdc aic jcsa h50 cf mt50",
             }).append(
+              $("<textarea >",{class:"pa15 w70 tac bra15 fwb fs11 b1s cf"}).attr({placeholder:"Nhập tên Người Chơi"}).css({height: "50px",backgroundColor:"rgb(0 0 0 / 50%)"}),
               $("<div>", {
                 class: "btn btn-rule pa15 w70 tac bra15 fwb fs11 b1s cf",
               })
@@ -27,7 +28,7 @@ $("body").append(
                 .css("background-color", "rgb(0 0 0 / 50%)")
                 .append(
                   $("<label>").text("Độ khó :"),
-                  $("<div>",{class:"level cf plr15"}).text("Dễ")
+                  $("<div>", { class: "level cf plr15" }).text("Dễ")
                 ),
               $("<div>", {
                 class: " start btn pa15 w70 tac bra15 fwb fs11",
@@ -93,10 +94,17 @@ $("body").append(
                 "background-image",
                 "linear-gradient(rgba(17, 17, 17, 0.7), rgba(130, 121, 121, 0.8))"
               )
-              .append(             
+              .append(
                 $("<div>", { class: "sudoku-main " }).append(
                   // icon
-                  $("<div>", { class: " ptb25 tar cf df jcfe" }).append(
+                  $("<div>", { class: " ptb25 tar cf df jcsa" }).append(
+                    $("<div>", { class: "df" }).append(
+                      $("<label>").text("Người chơi :"),
+                      $("<div>", { class: "player cf plr15" }).text("Trụ")
+                    ),
+                    $("<div>", { class: "df" }).append(
+                      $("<div>", { class: "score cf plr15" })
+                    ),
                     $("<audio>", {
                       class: "audioPlayer",
                     }).append(
@@ -111,13 +119,15 @@ $("body").append(
                     $("<i>", {
                       class: "fa-solid fa-volume-xmark  plr10 fs15",
                     }),
-                    $("<i>", {
-                      class: "fa-solid fa-play plr10 dn fs15",
-                    }),
-                    $("<i>", {
-                      class: "fa-solid fa-pause plr10 fs15",
-                    }),
-                    $("<span>", { class: "time" })
+                    $("<div>", { class: "df" }).append(
+                      $("<i>", {
+                        class: "fa-solid fa-play plr10 dn fs15",
+                      }),
+                      $("<i>", {
+                        class: "fa-solid fa-pause plr10 fs15",
+                      }),
+                      $("<span>", { class: "time" })
+                    )
                   ),
                   $("<div>", { class: "df jcsc" }).append(
                     $("<div>", { class: "w1-xs w50 pr" }).append(
@@ -149,14 +159,14 @@ $("body").append(
                             $.map([1, 2, 3, 4, 5, 6, 7, 8, 9], function (el) {
                               return $("<div>", {
                                 class: "  w33 df jcsc ptb15 btn btnKeyboard",
-                              }).attr("data-value", el).append(
-                                $("<div>", {
-                                  class:
-                                    "btn pa25 pa15-xs w33 h30 bra15 df jcsc aic bgcf fs15 fwb",
-                                })
-                                  .append(el)
-                                  
-                              );
+                              })
+                                .attr("data-value", el)
+                                .append(
+                                  $("<div>", {
+                                    class:
+                                      "btn pa25 pa15-xs w33 h30 bra15 df jcsc aic bgcf fs15 fwb",
+                                  }).append(el)
+                                );
                             }),
                             // chơi lai
                             $("<div>", {

@@ -69,3 +69,6 @@ input {
 		opacity: 1;
 	}
 }
+::placeholder {
+	color: #dbd2d2;
+}

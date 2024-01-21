@@ -104,7 +104,7 @@ $(document).ready(function () {
     checkInputDisabled();
   }
   // win game
-  $(".end-game").on("click",function(){
+  $(".end-game").on("click", function () {
     var sudokuSolved = true;
     $("input").each(function () {
       if (!$(this).val()) {
@@ -112,13 +112,25 @@ $(document).ready(function () {
         return false;
       }
     });
-  
+
     if (sudokuSolved) {
       alert("Sudoku đã được giải!");
     } else {
       alert("Vui lòng điền đầy đủ các ô");
     }
-  })
+  });
+  // người chơi
+  function nguoiChoi() {
+    let input = $("textarea").val().trim();
+    if (input !== "") {
+      $(".player").text(input);
+      return true;
+    } else {
+      alert("Vui lòng nhập thông tin người chơi.");
+      return false; 
+    }
+  }
+  
 
   // luật chơi
   $(".btn-rule").on("click", function () {
@@ -141,7 +153,7 @@ $(document).ready(function () {
   var level_index = 0;
   var level_nameIndex = 0;
 
-  // Function để set độ khó và cập nhật giao diện
+  //set độ khó và cập nhật giao diện
   function setDifficulty(index) {
     level_nameIndex = index;
     level_index = level_nameIndex;
@@ -162,19 +174,22 @@ $(document).ready(function () {
   // Bắt đầu chơi và chọn độ khó
   var isButtonClicked = false;
   $(".start").on("click", function () {
-    if (!isButtonClicked) {
-      // Lấy độ khó hiện tại và bắt đầu trò chơi
-      let currentDifficulty = level[level_index];
-      $(".game-content").show().addClass("dichuyen");
-      $(".rule").hide();
-      $(this).text("Đang Chơi...");
-      startTimer();
-      createSudokuTable(currentDifficulty);
-      $(this).attr("disabled", "disabled");
-      //biến theo dõi trạng thái đã click
-      isButtonClicked = true;
-      $(".end-game").show();
+    if( nguoiChoi()){
+      if (!isButtonClicked) {
+        // Lấy độ khó hiện tại và bắt đầu trò chơi
+        let currentDifficulty = level[level_index];
+        $(".game-content").show().addClass("dichuyen");
+        $(".rule").hide();
+        $(this).text("Đang Chơi...");
+        startTimer();
+        createSudokuTable(currentDifficulty);
+        $(this).attr("disabled", "disabled");
+        //biến theo dõi trạng thái đã click
+        isButtonClicked = true;
+        $(".end-game").show();
+      }
     }
+    
   });
 
   // chơi lại
@@ -215,6 +230,11 @@ $(document).ready(function () {
     var removeData = $(this).data("value");
     inputToClear.val(removeData);
   });
+  // tính điểm ,1 điểm mỗi phút
+  function calculateScore(elapsedTimeInSeconds) {
+    var score = Math.floor(elapsedTimeInSeconds / 60);
+    return score;
+  }
 
   // Bộ đếm thời gian
   var startTime;
@@ -247,6 +267,12 @@ $(document).ready(function () {
 
         // Hiển thị thời gian trên trang web
         $(".time").html(formattedTime);
+
+        // Tính điểm dựa trên thời gian đã trôi qua
+        var score = calculateScore(elapsedTimeInSeconds);
+
+        // Hiển thị điểm trên trang web (thay thế bằng phần tử hiển thị điểm thực tế của bạn)
+        $(".score").html("Điểm: " + score);
       }
     }, 1000); // Cập nhật mỗi giây
   }
