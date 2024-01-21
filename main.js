@@ -103,34 +103,68 @@ $(document).ready(function () {
     }
     checkInputDisabled();
   }
-  // độ khó
+
+  // luật chơi
+  // $(".btn-rule").on("click", function () {
+  //   $(".rule").toggle().addClass("dichuyen");
+  //   $(".game-content").hide();
+  //   $(this).text("Đóng")
+  // });
+  $(".btn-rule").on("click", function () {
+    if ($(".rule").hide().hasClass("dichuyen")) {
+        $(".rule").removeClass("dichuyen");
+        $(".game-content").show();
+        $(this).text("Luật Chơi");
+    } else {
+        $(".rule").show().addClass("dichuyen");
+        $(".game-content").hide();
+        $(this).text("Đóng");
+    }
+});
+
+// start game
   const level_name = ["Dễ", "Trung bình", "Khó"];
-  const level = [0.9, 0.7, 0.5];
+  const level = [1, 0.7, 0.5];
   var btnLevel = $(".btnLevel");
   var levelText = $(".level");
   var level_index = 0;
   var level_nameIndex = 0;
+  
+  // Function để set độ khó và cập nhật giao diện
+  function setDifficulty(index) {
+    level_nameIndex = index;
+    level_index = level_nameIndex;
+    let newName_levelIndex = level_name[level_nameIndex];
+    let new_levelIndex = level[level_index];
+    levelText.text(newName_levelIndex);
+    createSudokuTable(new_levelIndex);
+  }
+  
+  // Bắt sự kiện click trên nút độ khó
   btnLevel.on("click", function () {
     level_nameIndex =
       level_index + 1 > level_name.length - 1 ? 0 : level_index + 1;
-    level_index = level_nameIndex;
-    let newName_levelIndex = level_name[level_nameIndex];
-    let new_levelIndex = level_name[level_index];
-    levelText.text(newName_levelIndex);
-    createSudokuTable(new_levelIndex);
+    setDifficulty(level_nameIndex);
   });
+  
+  // Bắt đầu chơi và chọn độ khó
+  $(".start").on("click", function () {
+    // Lấy độ khó hiện tại và bắt đầu trò chơi
+    let currentDifficulty = level[level_index];
+    $(".game-content").show().addClass("dichuyen");
+    $(".rule").hide();
+    $(this).text("Đang Chơi")
+    startTimer();
+    createSudokuTable(currentDifficulty);
+  });
+  
 
   // chơi lại
   $(".play-again").on("click", function () {
-    $(".taobang").empty();
-    createSudokuTable();
     startTimer();
     $("input").each(function () {
-      var prePopVal = $(this).val();
-      if (prePopVal > 0) {
-        $(this).addClass("prepopulated").attr("disabled", "disabled");
-      } else {
-        $(this).addClass("playable");
+      if (!$(this).prop("disabled")) {
+        $(this).val(null);
       }
     });
   });
@@ -156,12 +190,14 @@ $(document).ready(function () {
     checkColumns();
     checkSectors();
   });
+
   //xóa input
   $(".remove").on("mousedown", function () {
     var inputToClear = $("input:focus");
     var removeData = $(this).data("value");
     inputToClear.val(removeData);
   });
+
   // Bộ đếm thời gian
   var startTime;
   var timerInterval;
@@ -196,6 +232,7 @@ $(document).ready(function () {
       }
     }, 1000); // Cập nhật mỗi giây
   }
+
   // tạm dừng thời gian
   function pauseTimer() {
     if (!isPaused && timerInterval) {
@@ -207,13 +244,6 @@ $(document).ready(function () {
   function pad(num) {
     return num < 10 ? "0" + num : num;
   }
-
-  // Bắt đầu chơi
-  $(".start").on("click", function () {
-    $(".game-content").show().addClass("dichuyen");
-    $(".rule").hide();
-    startTimer();
-  });
 
   //audio
   var audioPlayer = $(".audioPlayer");
@@ -231,7 +261,7 @@ $(document).ready(function () {
     audioXmark.hide();
   });
 
-  // pause
+  // tạm dừng thời gian
   $(".fa-pause").click(function () {
     pauseTimer();
     $(this).hide();
@@ -239,7 +269,8 @@ $(document).ready(function () {
     $(".taobang").hide();
     $(".continue").css("display", "block");
   });
-  // resume
+
+  // thời gian tiếp tục
   $(".fa-play").click(function () {
     startTimer();
     $(this).hide();
@@ -254,23 +285,10 @@ $(document).ready(function () {
     $(".fa-play").hide();
     startTimer();
   });
-  // luật chơi
-  $(".btn-rule").on("click", function () {
-    $(".rule").show().addClass("dichuyen");
-    $(".game-content").hide();
-  });
 
   //--------------------------------------------------------------------------------------------------------------------------------------
 
   // Lặp qua bảng và tìm các ô đã được điền trước, sau đó khóa chúng
-  // $("input").each(function () {
-  //   var prePopVal = $(this).val();
-  //   if (prePopVal > 0) {
-  //     $(this).addClass("prepopulated").attr("disabled", "disabled");
-  //   } else {
-  //     $(this).addClass("playable");
-  //   }
-  // });
   function checkInputDisabled() {
     let input = $("input");
     input.each(function () {
